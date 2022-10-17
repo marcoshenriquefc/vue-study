@@ -34,7 +34,7 @@ export default defineComponent({
             console.log(this.temaEscuro)
             this.$emit('aoMudarTema', this.temaEscuro);
         }
-    }
+    },
 })
 </script>
 
