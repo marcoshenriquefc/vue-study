@@ -1,27 +1,32 @@
 <template>
     <section class="projetos">
         <h1 class="title"> Projetos </h1>
-        <form @submit.prevent="salvar()">
-            <input
-                type="text"
-                class="input"
-                v-model="nomeDoProjeto"
-            />
-            <div class="field">
-                <button class="button" type="submit">Salvar</button>
-            </div>
-        </form>
+        <router-link to="/projetos/novo" class="button botao">
+            <span class="icon is-small">
+                <i class="fas fa-plus"></i>
+            </span>
+            <span>Novo projeto</span>
+        </router-link>
+
         <table class="table is-fullwidth">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="projeto in projetos" :key="projeto.id">
                     <td>{{ projeto.id }}</td>
                     <td>{{ projeto.nome }}</td>
+                    <td>
+                        <router-link :to="`/projetos/${projeto.id}`" class="button botao">
+                            <span class="icon is-small">
+                                <i class="fas fa-pencil-alt">Editar</i>
+                            </span>
+                        </router-link>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -35,23 +40,9 @@ import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
     name: 'ProjetosView',
-    data(){
-        return{
-            nomeDoProjeto: '',
-        }
-    },
-    methods: {
-        salvar(): void{
-
-            this.store.commit('ADICIONA_PROJETO', this.nomeDoProjeto);
-            this.nomeDoProjeto = '';
-        }
-    },
-    setup(){
+    setup() {
         const store = useStore();
-
         return {
-            store,
             projetos: computed(() => store.state.projetos)
         }
     }
@@ -59,10 +50,14 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.projetos{
+.projetos {
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.botao {
+    width: fit-content;
 }
 </style>
