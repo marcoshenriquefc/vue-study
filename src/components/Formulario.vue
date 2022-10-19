@@ -1,7 +1,7 @@
 <template>
     <div class="box pesquisa-area">
         <div class="columns">
-            <div class="column is-8" role="form" aria-label="Formulário para criação de uma nova tarefa">
+            <div class="column is-5" role="form" aria-label="Formulário para criação de uma nova tarefa">
                 <input
                     type="text"
                     class="input input-tarefa"
@@ -9,6 +9,18 @@
                     v-model="descricao"
                 />
             </div>
+
+            <div class="column is-3">
+                <div class="select">
+                    <select v-model="idProjeto">
+                        <option value="">Selecione o projeto</option>
+                        <option :value="projeto.id" v-for="projeto in projetos" :key="projeto.id">
+                            {{ projeto.nome }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
             <div class="column">
                 <Temporizador @temporizadorFinalizado="finalizarTemporizador" />
             </div>
@@ -17,14 +29,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 import Temporizador from './Temporizador.vue'
+import { useStore } from 'vuex'
+
+import { key } from '@/store'
+
 
 export default defineComponent({
     name: 'FormularioTarefa',
     data() {
         return {
-            descricao: ''
+            descricao: '',
+            idProjeto: ''
         }
     },
     emits: ['salvarNovaTarefa'],
@@ -35,22 +52,31 @@ export default defineComponent({
         finalizarTemporizador(tempoEmSegundos: number) {
             this.$emit('salvarNovaTarefa', {
                 TempoEmSegundos: tempoEmSegundos,
-                descricao: this.descricao
+                descricao: this.descricao,
+                projeto: this.projetos.find(p => p.id == this.idProjeto)
             });
             this.descricao = ''
         }
+    },
+    setup() {
+        const store = useStore(key);
+
+        return {
+            projetos: computed(() => store.state.projetos)
+        }
     }
+
 })
 </script>
 
 
 <style scoped>
-.display{
+.display {
     color: var(--tx-color-primario);
 }
 </style>
 <style >
-.pesquisa-area{
+.pesquisa-area {
     background-color: var(--bg-color-primario);
     color: var(--tx-color-primario);
 }
