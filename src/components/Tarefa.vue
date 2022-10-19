@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import ITarefas from '@/inferfaces/ITarefas';
+import ITarefas from '@/interfaces/ITarefas';
 import { defineComponent, PropType } from 'vue'
 import Cronometro from './Cronometro.vue'
 import BoxTarefa from './Box.vue';

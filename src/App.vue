@@ -4,20 +4,8 @@
       <barraLateral @ao-mudar-tema="mudarTema"/>
     </div>
     <div class="is-three-quarters fundo-formulario">
-      <FormularioTarefa @salvar-nova-tarefa="salvarTarefas" />
-      <div class="lista-tarefa">
-        <TarefaDefinida
-          v-for="(tarefa, index) in tarefas"
-          :key="index"
-          :tarefa="tarefa"
-        />
-
-          <BoxTarefa v-if="listaEstaVazia">
-            <p>
-              Você ainda não possui nenhuma tarefa!
-            </p>
-          </BoxTarefa>
-      </div>
+      <!-- <RouterView></RouterView> -->
+      <router-view></router-view>
     </div>
   </main>
 </template>
@@ -27,36 +15,18 @@ import { defineComponent } from 'vue';
 
 //Componentes
 import BarraLateral from './components/Barra-lateral.vue'
-import FormularioTarefa from './components/Formulario.vue'
-import TarefaDefinida from './components/Tarefa.vue'
-import BoxTarefa from './components/Box.vue'
-
-//Interfaces
-import ITarefas from './inferfaces/ITarefas.js'
 
 export default defineComponent({
   name: 'App',
   components: {
     BarraLateral,
-    FormularioTarefa,
-    TarefaDefinida,
-    BoxTarefa
   },
   data() {
     return {
-      tarefas: [] as ITarefas[],
       modoEscuro: false
     }
   },
-  computed: {
-    listaEstaVazia(): boolean{
-      return this.tarefas.length <= 0;
-    }
-  },
   methods: {
-    salvarTarefas(tarefa: ITarefas): void {
-      this.tarefas.push(tarefa);
-    },
     mudarTema(modoEscuro: boolean){
       this.modoEscuro = modoEscuro;
     }
