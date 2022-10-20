@@ -10,18 +10,18 @@
         </div>
         <nav class="panel mt-5">
             <ul>
-                <li>
-                    <RouterLink to="/" class="link">
+                <RouterLink to="/" class="link">
+                    <li>
                         <i class="fas fa-tasks"></i>
                         Tarefas
-                    </RouterLink>
-                </li>
-                <li>
-                    <RouterLink to="/projetos" class="link">
+                    </li>
+                </RouterLink>
+                <RouterLink to="/projetos" class="link">
+                    <li>
                         <i class="fas fa-project-diagram"></i>
                         Projetos
-                    </RouterLink>
-                </li>
+                    </li>
+                </RouterLink>
             </ul>
         </nav>
     </header>
