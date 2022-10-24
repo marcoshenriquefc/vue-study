@@ -1,5 +1,6 @@
 <template>
 <section class="projetos">
+    <NotificacaoMensagem></NotificacaoMensagem>
     <h1 class="title"> Projetos </h1>
     <router-view></router-view>
 </section>
@@ -8,9 +9,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import NotificacaoMensagem from '@/components/notificacao.vue';
 
 export default defineComponent({
-    name: 'ProjetosView',
+    name: "ProjetosView",
+    components: { NotificacaoMensagem }
 })
 </script>
 

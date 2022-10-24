@@ -11,10 +11,22 @@
 <script lang="ts">
 import useStore from '@/store';
 import { defineComponent } from 'vue';
-import { ADICIONA_PROJETO, EDITA_PROJETO } from '@/store/tipo-mutacao'
+import { ADICIONA_PROJETO, EDITA_PROJETO, NOTIFICAR } from '@/store/tipo-mutacao'
+import { TipoDeNotificacao } from '@/interfaces/INotificacao';
+import { notificacaoMixin } from '@/mixins/notificar'
 
 export default defineComponent({
     name: 'FormularioProjetoView',
+    mounted() {
+        if (this.idProjeto) {
+            const projeto = this.store.state.projetos.find(proj => {
+                return proj.id == this.idProjeto;
+            })
+
+            this.nomeDoProjeto = projeto?.nome || '';
+        }
+    },
+    mixins: [ notificacaoMixin ],
     data() {
         return {
             nomeDoProjeto: '',
@@ -32,22 +44,15 @@ export default defineComponent({
                 this.store.commit(ADICIONA_PROJETO, this.nomeDoProjeto || 'Nome não definido');
             }
 
+            this.notificar( TipoDeNotificacao.SUCESSO, 'Falha', 'Cadastrado com sucesso');
             this.nomeDoProjeto = '';
             this.$router.push('/projetos');
-        }
+        },
+        
     },
     props: {
         idProjeto: {
             type: String
-        }
-    },
-    mounted() {
-        if (this.idProjeto) {
-            const projeto = this.store.state.projetos.find(proj => {
-                return proj.id == this.idProjeto;
-            })
-
-            this.nomeDoProjeto = projeto?.nome || '';
         }
     },
     setup() {
