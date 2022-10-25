@@ -11,11 +11,10 @@
 <script lang="ts">
 import useStore from '@/store';
 import { defineComponent } from 'vue';
-import { ADICIONA_PROJETO, EDITA_PROJETO, NOTIFICAR } from '@/store/tipo-mutacao'
 import { TipoDeNotificacao } from '@/interfaces/INotificacao';
-import { notificacaoMixin } from '@/mixins/notificar'
 
 import useNotificador from '@/hooks/notificador'
+import { CADASTRAR_PROJETO, EDITAR_PROJETO } from '@/store/tipo-acao';
 
 export default defineComponent({
     name: 'FormularioProjetoView',
@@ -37,19 +36,45 @@ export default defineComponent({
     methods: {
         salvar(): void {
             if (this.idProjeto) {
-                this.store.commit(EDITA_PROJETO, {
-                    id: this.idProjeto,
-                    nome: this.nomeDoProjeto || 'Nome não definido'
-                })
+                this.store.dispatch(EDITAR_PROJETO,
+                    {
+                        id: this.idProjeto,
+                        nome: this.nomeDoProjeto || 'Nome não definido'
+                    }
+                )
+                .then(()=> this.cadastroSucesso())
+                    .catch(err =>{
+                        this.notificar(
+                            TipoDeNotificacao.FALHA,
+                            'Falha',
+                            'Erro ao editar o projeto :('
+                        );
+                        console.log(err)
+                    });
             }
             else {
-                this.store.commit(ADICIONA_PROJETO, this.nomeDoProjeto || 'Nome não definido');
+                this.store.dispatch(CADASTRAR_PROJETO, this.nomeDoProjeto || 'Nome não definido')
+                    .then(()=> this.cadastroSucesso())
+                    .catch(err =>{
+                        this.notificar(
+                            TipoDeNotificacao.FALHA,
+                            'Falha',
+                            'Erro ao cadastrar o projeto :('
+                        );
+                        console.log(err)
+                    });
             }
 
-            this.notificar( TipoDeNotificacao.SUCESSO, 'Sucesso', 'Cadastrado com sucesso ;)');
+        },
+        cadastroSucesso(){
+            this.notificar(
+                TipoDeNotificacao.SUCESSO,
+                'Sucesso',
+                'Cadastrado com sucesso ;)'
+            );
             this.nomeDoProjeto = '';
             this.$router.push('/projetos');
-        },
+        }
         
     },
     props: {

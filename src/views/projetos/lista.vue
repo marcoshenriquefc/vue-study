@@ -22,13 +22,12 @@
                 <td>
                     <router-link :to="`/projetos/${projeto.id}`" class="button botao">
                         <span class="icon is-small">
-                            <i class="fas fa-pencil-alt">Edit</i>
+                            <i class="fas fa-pencil-alt"></i>
                         </span>
                     </router-link>
                     <button class="button ml-2 is-danger" @click="excluirProjeto(projeto.id)">
                         <span class="icon is-small">
                             <i class="fas fa-trash"></i>
-                            Del
                         </span>
                     </button>
                 </td>
@@ -39,22 +38,37 @@
 
 <script lang="ts">
 import useStore, { store } from '@/store';
+import { OBTER_PROJETOS, REMOVER_PROJETO } from '@/store/tipo-acao';
 import { EXCLUIR_PROJETO } from '@/store/tipo-mutacao';
 import { defineComponent, computed } from 'vue';
+import useNotificador from '@/hooks/notificador'
+import { TipoDeNotificacao } from '@/interfaces/INotificacao';
 
 
 export default defineComponent({
     name: 'ListaProjetos',
     methods: {
         excluirProjeto(idProjeto: string) {
-            store.commit(EXCLUIR_PROJETO ,idProjeto);
+            store.dispatch(REMOVER_PROJETO, idProjeto)
+                .then(() => store.commit(EXCLUIR_PROJETO, idProjeto))
+                .catch(() => {
+                    this.notificar(
+                        TipoDeNotificacao.FALHA,
+                        'Falha',
+                        'Falha ao deletar o projeto'
+                    )
+                })
         }
     },
     setup() {
         const store = useStore();
+        const { notificar } = useNotificador();
+
+        store.dispatch(OBTER_PROJETOS);
         return {
             store,
-            projetos: computed(() => store.state.projetos)
+            projetos: computed(() => store.state.projetos),
+            notificar
         }
     }
 })

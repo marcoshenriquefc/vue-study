@@ -1,5 +1,5 @@
 <template>
-    <BoxTarefa>
+    <BoxTarefa class="clicavel" @click="tarefaClicada">
         <div class="columns">
             <div class="column is-5">
                 {{ tarefa.descricao || 'Tarefa não definida'}}
@@ -26,10 +26,16 @@ export default defineComponent({
         Cronometro,
         BoxTarefa
     },
+    emits:['tarefaSelecionada'],
     props: {
         tarefa: {
             type: Object as PropType<ITarefas>,
             required: true
+        }
+    },
+    methods: {
+        tarefaClicada(){
+            this.$emit('tarefaSelecionada', this.tarefa)
         }
     }
 })
@@ -38,5 +44,8 @@ export default defineComponent({
 <style scoped>
 .tarefa-definida{
     background-color: #cafadc;
+}
+.clicavel{
+    cursor: pointer;
 }
 </style>
