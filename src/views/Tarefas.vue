@@ -22,6 +22,9 @@ import BoxTarefa from '../components/Box.vue'
 
 //Interfaces
 import ITarefas from '../interfaces/ITarefas.js'
+import useStore from '@/store';
+import { ADICIONA_TAREFA } from '@/store/tipo-mutacao'
+import { computed } from '@vue/reactivity';
 
 export default defineComponent({
     name: 'BaseTarefa',
@@ -30,11 +33,6 @@ export default defineComponent({
         TarefaDefinida,
         BoxTarefa
     },
-    data() {
-        return {
-            tarefas: [] as ITarefas[],
-        }
-    },
     computed: {
         listaEstaVazia(): boolean {
             return this.tarefas.length <= 0;
@@ -42,8 +40,17 @@ export default defineComponent({
     },
     methods: {
         salvarTarefas(tarefa: ITarefas): void {
-            this.tarefas.push(tarefa);
+            // this.tarefas.push(tarefa);
+            this.store.commit(ADICIONA_TAREFA, tarefa)
         },
+    },
+    setup() {
+        const store = useStore()
+        // const tarefas = computed( () => store.state.tarefas)
+        return {
+            store,
+            tarefas: computed( () => store.state.tarefas)
+        }
     }
 });
 </script>

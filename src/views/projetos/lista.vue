@@ -22,13 +22,12 @@
                 <td>
                     <router-link :to="`/projetos/${projeto.id}`" class="button botao">
                         <span class="icon is-small">
-                            <i class="fas fa-pencil-alt">Edit</i>
+                            <i class="fas fa-pencil-alt"></i>
                         </span>
                     </router-link>
                     <button class="button ml-2 is-danger" @click="excluirProjeto(projeto.id)">
                         <span class="icon is-small">
                             <i class="fas fa-trash"></i>
-                            Del
                         </span>
                     </button>
                 </td>
@@ -41,20 +40,26 @@
 import useStore, { store } from '@/store';
 import { EXCLUIR_PROJETO } from '@/store/tipo-mutacao';
 import { defineComponent, computed } from 'vue';
+import useNotificar from '@/hooks/notificador'
+import { TipoDeNotificacao } from '@/interfaces/INotificacao';
 
 
 export default defineComponent({
     name: 'ListaProjetos',
     methods: {
         excluirProjeto(idProjeto: string) {
-            store.commit(EXCLUIR_PROJETO ,idProjeto);
+            store.commit(EXCLUIR_PROJETO, idProjeto);
+            this.notificar(TipoDeNotificacao.FALHA, 'Excluir', 'sua atividade foi excluida com sucesso')
         }
     },
     setup() {
         const store = useStore();
+
+        const { notificar } = useNotificar();
         return {
             store,
-            projetos: computed(() => store.state.projetos)
+            projetos: computed(() => store.state.projetos),
+            notificar
         }
     }
 })
