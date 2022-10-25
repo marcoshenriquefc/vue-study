@@ -15,6 +15,8 @@ import { ADICIONA_PROJETO, EDITA_PROJETO, NOTIFICAR } from '@/store/tipo-mutacao
 import { TipoDeNotificacao } from '@/interfaces/INotificacao';
 import { notificacaoMixin } from '@/mixins/notificar'
 
+import useNotificador from '@/hooks/notificador'
+
 export default defineComponent({
     name: 'FormularioProjetoView',
     mounted() {
@@ -26,7 +28,7 @@ export default defineComponent({
             this.nomeDoProjeto = projeto?.nome || '';
         }
     },
-    mixins: [ notificacaoMixin ],
+    // mixins: [ notificacaoMixin ],
     data() {
         return {
             nomeDoProjeto: '',
@@ -44,7 +46,7 @@ export default defineComponent({
                 this.store.commit(ADICIONA_PROJETO, this.nomeDoProjeto || 'Nome não definido');
             }
 
-            this.notificar( TipoDeNotificacao.SUCESSO, 'Falha', 'Cadastrado com sucesso');
+            this.notificar( TipoDeNotificacao.SUCESSO, 'Sucesso', 'Cadastrado com sucesso ;)');
             this.nomeDoProjeto = '';
             this.$router.push('/projetos');
         },
@@ -58,8 +60,10 @@ export default defineComponent({
     setup() {
         const store = useStore();
 
+        const { notificar } = useNotificador();
         return {
             store,
+            notificar
         }
     }
 })
