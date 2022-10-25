@@ -120,7 +120,7 @@ export const store = createStore<Estado>({
             .then(() => {
                 this.commit(EDITA_TAREFA, tarefa)
             });
-        }
+        },
 
     }
 })
