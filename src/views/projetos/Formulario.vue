@@ -20,7 +20,7 @@ export default defineComponent({
     name: 'FormularioProjetoView',
     mounted() {
         if (this.idProjeto) {
-            const projeto = this.store.state.projetos.find(proj => {
+            const projeto = this.store.state.projeto.projetos.find(proj => {
                 return proj.id == this.idProjeto;
             })
 
