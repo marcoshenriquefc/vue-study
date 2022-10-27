@@ -13,7 +13,7 @@
 
     <div class="modal" :class="{'is-active': tarefaSelecionada}" v-if="tarefaSelecionada">
         <div class="modal-background"></div>
-        <div class="modal-card">
+        <form class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title">Modal title</p>
                 <button @click="fecharModal" class="delete" aria-label="close"></button>
@@ -27,10 +27,10 @@
                 />
             </section>
             <footer class="modal-card-foot">
-                <button @click="alterarTarefa" class="button is-success">Save changes</button>
+                <button type="submit" @click="alterarTarefa" class="button is-success">Save changes</button>
                 <button @click="fecharModal" class="button">Cancel</button>
             </footer>
-        </div>
+        </form>
     </div>
 </template>
 
@@ -78,6 +78,7 @@ export default defineComponent({
         },
         alterarTarefa(){
             this.store.dispatch(EDITAR_TAREFA, this.tarefaSelecionada)
+            this.fecharModal()
         }
     },
     setup() {
