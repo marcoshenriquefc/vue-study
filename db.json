@@ -5,8 +5,8 @@
       "nome": "Estudar TypeScript"
     },
     {
-      "nome": "Estudar Vue.js",
-      "id": 2
+      "id": 2,
+      "nome": "Estudar Vue.js"
     }
   ],
   "tarefas": [
